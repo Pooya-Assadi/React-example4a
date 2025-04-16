@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const Otp = () => {
   const [timer, setTimer] = useState(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isCodeSent, setIsCodeSent] = useState(false);
   const intervalRef = useRef(null);
 
   const handleClick = () => {
@@ -19,6 +20,7 @@ const Otp = () => {
           if (prev <= 1) {
             clearInterval(intervalRef.current);
             setIsButtonDisabled(false);
+            setIsCodeSent(true);
             return 0;
           }
           return prev - 1;
@@ -31,16 +33,29 @@ const Otp = () => {
 
   return (
     <>
-      <label htmlFor="smsCode">SMS Code:</label>
-      <input
-        type="text"
-        id="smsCode"
-        name="smsCode"
-        placeholder="Enter SMS Code"
-      />
-      <button onClick={handleClick} disabled={isButtonDisabled}>
-        {isButtonDisabled ? `Resend in ${timer}s` : "Get new Code"}
-      </button>
+      <div className="labelInput2Container">
+        <label htmlFor="smsCode">SMS Code:</label>
+        <div className="smsCodeContainer">
+          <input
+            type="text"
+            id="smsCode"
+            name="smsCode"
+            placeholder="Enter SMS Code"
+            className="smsInput"
+          />
+          <button
+            onClick={handleClick}
+            disabled={isButtonDisabled}
+            className="codeBtn"
+          >
+            {isButtonDisabled
+              ? `Resend in ${timer}s`
+              : isCodeSent
+              ? "Get new Code"
+              : "Get SMS Code"}
+          </button>
+        </div>
+      </div>
     </>
   );
 };
